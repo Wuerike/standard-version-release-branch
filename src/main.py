@@ -3,6 +3,7 @@ import os
 import shlex
 import subprocess
 import time
+from github import Github
 
 PBANNER = "*" * 5 + " {} " + "*" * 5
 
@@ -13,8 +14,12 @@ class ReleaseActor():
         self.release_version = self.get_env("INPUT_RELEASE_VERSION")
         self.origin_branch = self.get_env("INPUT_ORIGIN_BRANCH")
         self.target_branch = self.get_env("INPUT_TARGET_BRANCH")
+        self.template = self.get_env("INPUT_PR_TEMPLATE")
+        self.as_draft = self.get_env("INPUT_AS_DRAFT")
         self.actor = self.get_env("GITHUB_ACTOR")
+        self.repo_name = self.get_env("GITHUB_REPOSITORY")
         self.release_branch = f"release/v{self.release_version}"
+        self.git_client = Github(self.github_token)
 
     def get_env(self, env_var: str):
         """Get environment variables"""
@@ -63,6 +68,14 @@ class ReleaseActor():
         self.run_cmd(f"npx standard-version --release-as v{self.release_version}")
         self.run_cmd(f"git push --set-upstream origin {self.release_branch} --follow-tags")
 
+        repo = self.git_client.get_repo(self.repo_name)
+        repo.create_pull(
+            title=self.release_branch, 
+            body=self.template, 
+            head=self.origin_branch, 
+            base=self.target_branch,
+            draft=self.as_draft
+        )
 
 if __name__ == "__main__":
     try:
