@@ -53,11 +53,15 @@ class ReleaseActor():
         return std_out, std_err
     
     def run(self):
+        """Open a pull request from a release branch"""
         self.run_cmd(f"git config --global user.email {self.actor}@noreply")
         self.run_cmd(f"git config --global user.name {self.actor}")
 
         self.run_cmd(f"git checkout {self.origin_branch}")
         self.run_cmd(f"git checkout -b {self.release_branch}")
+
+        self.run_cmd(f"npx standard-version --release-as v{self.release_version}")
+        self.run_cmd(f"git push --set-upstream origin {self.release_branch} --follow-tags")
 
 
 if __name__ == "__main__":
