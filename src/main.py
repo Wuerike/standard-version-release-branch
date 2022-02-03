@@ -72,7 +72,7 @@ class ReleaseActor():
         repo.create_pull(
             title=self.release_branch, 
             body=self.template, 
-            head=self.origin_branch, 
+            head=self.release_branch, 
             base=self.target_branch,
             draft=self.as_draft
         )
