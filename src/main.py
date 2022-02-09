@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import re
 import shlex
 import subprocess
 import time
@@ -16,9 +17,10 @@ class ReleaseActor():
         self.target_branch = self.get_env("INPUT_TARGET_BRANCH")
         self.template = self.get_env("INPUT_PR_TEMPLATE")
         self.as_draft = self.get_env("INPUT_AS_DRAFT")
+        self.push_tag = self.get_env("INPUT_PUSH_TAG")
         self.actor = self.get_env("GITHUB_ACTOR")
         self.repo_name = self.get_env("GITHUB_REPOSITORY")
-        self.release_branch = f"release/v{self.release_version}"
+        self.release_branch = f"release/vTEMP"
         self.git_client = Github(self.github_token)
 
     def get_env(self, env_var: str):
@@ -63,10 +65,27 @@ class ReleaseActor():
         self.run_cmd(f"git config --global user.name {self.actor}")
 
         self.run_cmd(f"git checkout {self.origin_branch}")
-        self.run_cmd(f"git checkout -b {self.release_branch}")
 
-        self.run_cmd(f"npx standard-version --release-as v{self.release_version}")
-        self.run_cmd(f"git push --set-upstream origin {self.release_branch} --follow-tags")
+        if self.release_version:
+            self.release_branch = f"release/v{self.release_version}"
+            self.run_cmd(f"git checkout -b {self.release_branch}")
+            self.run_cmd(f"npx standard-version --release-as v{self.release_version}")
+        else:
+            self.run_cmd(f"git checkout -b {self.release_branch}")
+            std_out = self.run_cmd("npx standard-version")
+            version_list = re.findall(r'\d+', std_out[0])
+            self.release_version = "{major}.{minor}.{patch}".format(
+                major = version_list[0],
+                minor = version_list[1],
+                patch = version_list[2]
+            )
+            self.release_branch = f"release/v{self.release_version}"
+            self.run_cmd(f"git branch -m {self.release_branch}")
+
+        if self.push_tag:
+            self.run_cmd(f"git push --set-upstream origin {self.release_branch} --follow-tags")
+        else:
+            self.run_cmd(f"git push --set-upstream origin {self.release_branch}")
 
         repo = self.git_client.get_repo(self.repo_name)
         repo.create_pull(
