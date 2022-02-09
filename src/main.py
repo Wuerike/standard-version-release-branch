@@ -17,6 +17,7 @@ class ReleaseActor():
         self.target_branch = self.get_env("INPUT_TARGET_BRANCH")
         self.template = self.get_env("INPUT_PR_TEMPLATE")
         self.as_draft = self.get_env("INPUT_AS_DRAFT")
+        self.push_tag = self.get_env("INPUT_PUSH_TAG")
         self.actor = self.get_env("GITHUB_ACTOR")
         self.repo_name = self.get_env("GITHUB_REPOSITORY")
         self.release_branch = f"release/vTEMP"
@@ -81,7 +82,10 @@ class ReleaseActor():
             self.release_branch = f"release/v{self.release_version}"
             self.run_cmd(f"git branch -m {self.release_branch}")
 
-        self.run_cmd(f"git push --set-upstream origin {self.release_branch} --follow-tags")
+        if self.push_tag:
+            self.run_cmd(f"git push --set-upstream origin {self.release_branch} --follow-tags")
+        else:
+            self.run_cmd(f"git push --set-upstream origin {self.release_branch}")
 
         repo = self.git_client.get_repo(self.repo_name)
         repo.create_pull(
