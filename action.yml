@@ -7,7 +7,7 @@ inputs:
     required: true
   release_version:
     description: 'Version to be released'
-    required: true
+    required: false
   origin_branch:
     description: 'Branch from where the release should be open, usually develop'
     required: true

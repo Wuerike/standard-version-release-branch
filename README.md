@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: Wuerike/standard-version-release-branch@develop
+      - uses: Wuerike/standard-version-release-branch@1.2.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_version: ${{ github.event.inputs.version }}
@@ -43,7 +43,7 @@ jobs:
 | Name              | Type      | Description |
 | -------           | ------    | ----------- |
 | `github_token`    | string    | Github Token with write permissions **Required**|
-| `release_version` | string    | Version you want to release, in the formart MAJOR.MINOR.PATH **Required**|
+| `release_version` | string    | Version you want to release, in the formart MAJOR.MINOR.PATH **Optional**|
 | `origin_branch`   | string    | Branch from where the release should be opened, usually develop **Required**|
 | `target_branch`   | string    | Branch where the release should be merged, usually master or main **Required**|
 | `as_draft`        | bool      | Boolean flag to open as draft or not, **Default: False**|
