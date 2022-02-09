@@ -1,0 +1,28 @@
+name: "Main-to-develop"
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  release:
+    name: Main-to-develop
+    runs-on: ubuntu-latest    
+    if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
+    steps:
+      - name: 'Create PR: Merge main into develop branch'
+        id: create-develop-pull-request
+        uses: thomaseizinger/create-pull-request@1.2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          head: main
+          base: develop
+          labels: develop
+          title: Merge main into develop branch
+          body: |
+            This PR merges the main branch back into develop.
+            This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the develop branch.
