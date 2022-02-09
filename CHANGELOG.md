@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Wuerike/standard-version-release-branch/compare/v1.1.0...v1.2.0) (2022-02-09)
+
+
+### Features
+
+* Allow release without specifying the version ([763a114](https://github.com/Wuerike/standard-version-release-branch/commit/763a114131cc3e37fce28c4be91355aa09bd6a7c))
+* Make follow tags optional ([f63bb8c](https://github.com/Wuerike/standard-version-release-branch/commit/f63bb8cb66473d3a2d8abdca864fcad6d362b5ba))
+
 ## 1.1.0 (2022-02-03)
 
 
