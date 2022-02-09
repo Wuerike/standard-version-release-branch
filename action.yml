@@ -22,6 +22,10 @@ inputs:
     description: 'Boolean flag to open as draft or not'
     required: false
     default: 'false'
+  push_tag:
+    description: 'Boolean flag to push the new tag or not'
+    required: false
+    default: 'true'
 runs:
   using: 'docker'
   image: 'Dockerfile'
