@@ -82,9 +82,9 @@ class ReleaseActor():
 
         repo = self.git_client.get_repo(self.repo_name)
         repo.create_pull(
-            title=self.release_branch, 
+            title="release/v{self.release_version}", 
             body=self.template, 
-            head=self.release_branch, 
+            head="release/v{self.release_version}", 
             base=self.target_branch,
             draft=self.as_draft
         )
