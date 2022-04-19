@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/Wuerike/standard-version-release-branch/compare/v1.2.0...v1.2.1) (2022-04-19)
+
+
+### Bug Fixes
+
+* Resolve-unsafe-directory ([7e87492](https://github.com/Wuerike/standard-version-release-branch/commit/7e87492d17c4ba2cde2a6662e0fb0097b6227bdc))
+
 ## [1.2.0](https://github.com/Wuerike/standard-version-release-branch/compare/v1.1.0...v1.2.0) (2022-02-09)
 
 
