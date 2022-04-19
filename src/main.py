@@ -63,6 +63,7 @@ class ReleaseActor():
         """Open a pull request from a release branch"""
         self.run_cmd(f"git config --global user.email {self.actor}@noreply")
         self.run_cmd(f"git config --global user.name {self.actor}")
+        self.run_cmd("git config --global --add safe.directory /github/workspace")
 
         self.run_cmd(f"git checkout {self.origin_branch}")
 
